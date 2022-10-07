@@ -4,3 +4,12 @@ button {
   cursor: pointer;
   display: flex;
 }
+
+aside {
+  border: solid black;
+}
+
+header {
+  display: flex;
+}
+
