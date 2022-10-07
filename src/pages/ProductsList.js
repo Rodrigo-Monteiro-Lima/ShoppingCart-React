@@ -43,37 +43,40 @@ class ProductsList extends React.Component {
       </h2>
     );
     return (
-      <header>
-        <input
-          type="text"
-          data-testid="query-input"
-          onChange={ this.changedInputValue }
-        />
-        <button
-          type="button"
-          data-testid="query-button"
-          onClick={ this.clickSearchButton }
-        >
-          Search
-        </button>
+      <>
+        <header>
+          <input
+            type="text"
+            data-testid="query-input"
+            onChange={ this.changedInputValue }
+          />
+          <button
+            type="button"
+            data-testid="query-button"
+            onClick={ this.clickSearchButton }
+          >
+            Search
+          </button>
 
-        {notFound && initialTitleMessage}
-        {
-          notFound ? (
-            'Nenhum produto foi encontrado'
-          ) : (
-            productList.map((product) => (
-              <ProductCard
-                key={ product.id }
-                productName={ product.title }
-                productImage={ product.thumbnail }
-                productPrice={ product.price }
-              />
-            ))
-          )
-        }
-      </header>
-
+          {notFound && initialTitleMessage}
+          {
+            notFound ? (
+              'Nenhum produto foi encontrado'
+            ) : (
+              productList.map((product) => (
+                <ProductCard
+                  key={ product.id }
+                  productName={ product.title }
+                  productImage={ product.thumbnail }
+                  productPrice={ product.price }
+                />
+              ))
+            )
+          }
+          <ButtonCart />
+        </header>
+        <SideBar />
+      </>
     );
   }
 }
