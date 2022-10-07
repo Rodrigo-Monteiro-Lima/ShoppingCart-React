@@ -5,6 +5,9 @@ import {
   // getCategories
 } from '../services/api';
 import ProductCard from '../components/ProductCard';
+import ButtonCart from '../components/ButtonCart';
+import SideBar from '../components/SideBar/SideBar';
+import '../components/SideBar/style.css';
 
 class ProductsList extends React.Component {
   constructor() {
@@ -70,6 +73,7 @@ class ProductsList extends React.Component {
           )
         }
       </header>
+
     );
   }
 }
