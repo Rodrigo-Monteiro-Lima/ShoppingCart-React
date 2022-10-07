@@ -1,0 +1,15 @@
+button {
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+}
+
+aside {
+  border: solid black;
+}
+
+header {
+  display: flex;
+}
+
