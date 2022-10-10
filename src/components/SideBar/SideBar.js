@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getCategories } from '../../services/api';
 import './style.css';
 
@@ -38,5 +39,9 @@ class SideBar extends Component {
     );
   }
 }
+
+SideBar.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+};
 
 export default SideBar;
