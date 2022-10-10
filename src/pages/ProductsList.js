@@ -2,7 +2,7 @@ import React from 'react';
 import {
   // getProductById,
   getProductsFromCategoryAndQuery,
-  // getCategories
+  getCategoriesFromId,
 } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import ButtonCart from '../components/ButtonCart';
@@ -33,6 +33,11 @@ class ProductsList extends React.Component {
     } else {
       this.setState({ notFound: true });
     }
+  };
+
+  handleClick = async (id) => {
+    const productsList = await getCategoriesFromId(id);
+    this.setState({ productList: productsList.results, notFound: false });
   };
 
   render() {
@@ -75,7 +80,7 @@ class ProductsList extends React.Component {
           }
           <ButtonCart />
         </header>
-        <SideBar />
+        <SideBar handleClick={ this.handleClick } />
       </>
     );
   }

@@ -31,3 +31,14 @@ export async function getProductById(productId) {
     return error;
   }
 }
+
+export async function getCategoriesFromId(categorieId) {
+  const endpoint = `https://api.mercadolibre.com/sites/MLB/search?category=${categorieId}`;
+  try {
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+}

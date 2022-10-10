@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getCategories } from '../../services/api';
 import './style.css';
 
@@ -19,6 +20,7 @@ class SideBar extends Component {
   }
 
   render() {
+    const { handleClick } = this.props;
     const { categories } = this.state;
     return (
       <aside>
@@ -28,7 +30,7 @@ class SideBar extends Component {
             data-testid="category"
             type="button"
             key={ id }
-            onClick={ () => console.log(name) }
+            onClick={ () => handleClick(id) }
           >
             {name}
           </button>
@@ -37,5 +39,9 @@ class SideBar extends Component {
     );
   }
 }
+
+SideBar.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+};
 
 export default SideBar;
