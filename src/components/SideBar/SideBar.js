@@ -19,6 +19,7 @@ class SideBar extends Component {
   }
 
   render() {
+    const { handleClick } = this.props;
     const { categories } = this.state;
     return (
       <aside>
@@ -28,7 +29,7 @@ class SideBar extends Component {
             data-testid="category"
             type="button"
             key={ id }
-            onClick={ () => console.log(name) }
+            onClick={ () => handleClick(id) }
           >
             {name}
           </button>
