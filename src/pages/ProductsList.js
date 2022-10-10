@@ -74,6 +74,7 @@ class ProductsList extends React.Component {
                   productName={ product.title }
                   productImage={ product.thumbnail }
                   productPrice={ product.price }
+                  productId={ product.id }
                 />
               ))
             )

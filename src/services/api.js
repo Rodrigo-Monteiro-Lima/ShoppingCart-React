@@ -42,3 +42,14 @@ export async function getCategoriesFromId(categorieId) {
     return error;
   }
 }
+
+export async function getProductFromId(id) {
+  const endpoint = `https://api.mercadolibre.com/items/${id}`;
+  try {
+    const response = await fetch(endpoint);
+    const product = await response.json();
+    return product;
+  } catch (error) {
+    return error;
+  }
+}
