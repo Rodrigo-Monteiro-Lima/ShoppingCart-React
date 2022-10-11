@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 class ButtonCart extends Component {
   render() {
     return (
-      <div>
+      <div className="shopping-cart-button">
         <Link data-testid="shopping-cart-button" to="/shoppingcart">
           <img
             src="https://cdn-icons-png.flaticon.com/512/34/34627.png"
