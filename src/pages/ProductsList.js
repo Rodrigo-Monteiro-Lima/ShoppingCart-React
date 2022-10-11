@@ -16,7 +16,14 @@ class ProductsList extends React.Component {
       searchInput: '',
       productList: '',
       notFound: true,
+      cart: [],
     };
+  }
+
+  componentDidMount() {
+    if (localStorage.getItem('items') === null) {
+      localStorage.setItem('items', JSON.stringify([]));
+    }
   }
 
   changedInputValue = ({ target }) => {
@@ -35,6 +42,20 @@ class ProductsList extends React.Component {
     }
   };
 
+  save = () => {
+    const { cart } = this.state;
+    localStorage.setItem('items', JSON.stringify(cart));
+  };
+
+  addCartAndLocalStorage = ({ target }) => {
+    const { productList } = this.state;
+    const id = target.value;
+    const product = productList.find((item) => item.id === id);
+    this.setState((prevState) => ({
+      cart: [...prevState.cart, product],
+    }), this.save);
+  };
+
   handleClick = async (id) => {
     const productsList = await getCategoriesFromId(id);
     this.setState({ productList: productsList.results, notFound: false });
@@ -42,6 +63,7 @@ class ProductsList extends React.Component {
 
   render() {
     const { notFound, productList } = this.state;
+    // console.log(JSON.parse(localStorage.getItem('items')));
     const initialTitleMessage = (
       <h2 data-testid="home-initial-message">
         Digite algum termo de pesquisa ou escolha uma categoria.
@@ -75,6 +97,7 @@ class ProductsList extends React.Component {
                   productImage={ product.thumbnail }
                   productPrice={ product.price }
                   productId={ product.id }
+                  addCartAndLocalStorage={ this.addCartAndLocalStorage }
                 />
               ))
             )
