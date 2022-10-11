@@ -9,6 +9,7 @@ class ProductDetail extends Component {
     super();
     this.state = {
       product: [],
+      cart: [],
     };
   }
 
@@ -17,6 +18,23 @@ class ProductDetail extends Component {
     const product = await getProductFromId(id);
     this.setState({ product });
   }
+
+  save = () => {
+    const { cart } = this.state;
+    localStorage.setItem('items', JSON.stringify(cart));
+  };
+
+  addCartAndLocalStorage = ({ target }) => {
+    const { product } = this.state;
+    console.log(product);
+    const id = target.value;
+    const itemCart = product.id !== id;
+    if (itemCart === true) {
+      this.setState((prevState) => ({
+        cart: [...prevState.cart, product],
+      }), this.save);
+    }
+  };
 
   render() {
     const { product: { title, thumbnail, price, warranty } } = this.state;
@@ -35,6 +53,17 @@ class ProductDetail extends Component {
         />
         <h4 data-testid="product-detail-price">{price}</h4>
         <h4>{warranty}</h4>
+        <button
+          data-testid="product-detail-add-to-cart"
+          type="button"
+          // value={ id }
+          onClick={ this.addCartAndLocalStorage }
+        >
+          Compre agora!
+        </button>
+        <br />
+        <br />
+        <Link to="/shoppingcart"> Cart </Link>
       </div>
     );
   }
