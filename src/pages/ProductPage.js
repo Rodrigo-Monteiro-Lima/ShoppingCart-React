@@ -17,6 +17,7 @@ class ProductDetail extends Component {
       email: '',
       text: '',
       ratingObject: [],
+      cart: [],
     };
   }
 
@@ -74,6 +75,23 @@ class ProductDetail extends Component {
     }
   };
 
+  save = () => {
+    const { cart } = this.state;
+    localStorage.setItem('items', JSON.stringify(cart));
+  };
+
+  addCartAndLocalStorage = ({ target }) => {
+    const { product } = this.state;
+    console.log(product);
+    const id = target.value;
+    const itemCart = product.id !== id;
+    if (itemCart === true) {
+      this.setState((prevState) => ({
+        cart: [...prevState.cart, product],
+      }), this.save);
+    }
+  };
+
   render() {
     const { product: { title, thumbnail, price, warranty }, errorLog,
       ratingObject, rating, text, email } = this.state;
@@ -110,6 +128,17 @@ class ProductDetail extends Component {
             personRatingNumber={ rateObject.rating }
           />
         ))}
+        <button
+          data-testid="product-detail-add-to-cart"
+          type="button"
+          // value={ id }
+          onClick={ this.addCartAndLocalStorage }
+        >
+          Compre agora!
+        </button>
+        <br />
+        <br />
+        <Link to="/shoppingcart"> Cart </Link>
       </div>
     );
   }
