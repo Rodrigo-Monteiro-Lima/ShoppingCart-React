@@ -7,7 +7,7 @@ import {
 import ProductCard from '../components/ProductCard';
 import ButtonCart from '../components/ButtonCart';
 import SideBar from '../components/SideBar/SideBar';
-import '../components/SideBar/style.css';
+import './ProductList.css';
 
 class ProductsList extends React.Component {
   constructor() {
@@ -70,42 +70,47 @@ class ProductsList extends React.Component {
       </h2>
     );
     return (
-      <>
-        <header>
-          <input
-            type="text"
-            data-testid="query-input"
-            onChange={ this.changedInputValue }
-          />
-          <button
-            type="button"
-            data-testid="query-button"
-            onClick={ this.clickSearchButton }
-          >
-            Search
-          </button>
-
-          {notFound && initialTitleMessage}
-          {
-            notFound ? (
-              'Nenhum produto foi encontrado'
-            ) : (
-              productList.map((product) => (
-                <ProductCard
-                  key={ product.id }
-                  productName={ product.title }
-                  productImage={ product.thumbnail }
-                  productPrice={ product.price }
-                  productId={ product.id }
-                  addCartAndLocalStorage={ this.addCartAndLocalStorage }
-                />
-              ))
-            )
-          }
-          <ButtonCart />
-        </header>
+      <main className="container">
         <SideBar handleClick={ this.handleClick } />
-      </>
+        <header>
+          <div className="header-container">
+            <div className="input-container">
+              <input
+                type="text"
+                data-testid="query-input"
+                onChange={ this.changedInputValue }
+              />
+              <button
+                type="button"
+                data-testid="query-button"
+                onClick={ this.clickSearchButton }
+              >
+                Search
+              </button>
+            </div>
+            <ButtonCart />
+          </div>
+          {notFound && initialTitleMessage}
+          <div className="products-continer">
+            {
+              notFound ? (
+                'Nenhum produto foi encontrado'
+              ) : (
+                productList.map((product) => (
+                  <ProductCard
+                    key={ product.id }
+                    productName={ product.title }
+                    productImage={ product.thumbnail }
+                    productPrice={ product.price }
+                    productId={ product.id }
+                    addCartAndLocalStorage={ this.addCartAndLocalStorage }
+                  />
+                ))
+              )
+            }
+          </div>
+        </header>
+      </main>
     );
   }
 }
