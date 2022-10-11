@@ -9,7 +9,7 @@ class ProductDetail extends Component {
     super();
     this.state = {
       product: [],
-      // cart: [],
+      cart: [],
     };
   }
 
@@ -28,7 +28,7 @@ class ProductDetail extends Component {
     const { product } = this.state;
     console.log(product);
     const id = target.value;
-    const itemCart = product.id === id;
+    const itemCart = product.id !== id;
     if (itemCart === true) {
       this.setState((prevState) => ({
         cart: [...prevState.cart, product],
