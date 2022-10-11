@@ -110,5 +110,8 @@ class Form extends Component {
 Form.propTypes = {
   inputChanged: PropTypes.string.isRequired,
   submitButtonClicked: PropTypes.func.isRequired,
+  emailValue: PropTypes.string.isRequired,
+  textValue: PropTypes.string.isRequired,
+  ratingValue: PropTypes.number.isRequired,
 };
 export default Form;
