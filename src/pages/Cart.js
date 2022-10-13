@@ -47,7 +47,7 @@ class Cart extends React.Component {
     const { cart } = this.state;
     return (
       <div className="cart-container">
-        <Link to="/">Home</Link>
+        <Link to="/">Hom</Link>
         {cart.length === 0
           ? <p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>
           : (
