@@ -23,6 +23,7 @@ class Form extends Component {
             name="email"
             value={ emailValue }
             onChange={ inputChanged }
+            onClick={ inputChanged }
             required
           />
         </label>
@@ -36,6 +37,7 @@ class Form extends Component {
             data-testid="1-rating"
             name="rating"
             onChange={ inputChanged }
+            onClick={ inputChanged }
           />
         </label>
         <label htmlFor="2">
@@ -47,6 +49,7 @@ class Form extends Component {
             data-testid="2-rating"
             name="rating"
             onChange={ inputChanged }
+            onClick={ inputChanged }
           />
         </label>
         <label htmlFor="3">
@@ -59,6 +62,7 @@ class Form extends Component {
             data-testid="3-rating"
             name="rating"
             onChange={ inputChanged }
+            onClick={ inputChanged }
           />
         </label>
 
@@ -71,6 +75,7 @@ class Form extends Component {
             data-testid="4-rating"
             name="rating"
             onChange={ inputChanged }
+            onClick={ inputChanged }
           />
         </label>
         <label htmlFor="5">
@@ -82,6 +87,7 @@ class Form extends Component {
             data-testid="5-rating"
             name="rating"
             onChange={ inputChanged }
+            onClick={ inputChanged }
           />
         </label>
         <br />
@@ -93,6 +99,7 @@ class Form extends Component {
             name="text"
             id="text"
             data-testid="product-detail-evaluation"
+            onClick={ inputChanged }
           />
         </label>
         <button
@@ -108,10 +115,10 @@ class Form extends Component {
   }
 }
 Form.propTypes = {
-  inputChanged: PropTypes.string.isRequired,
+  inputChanged: PropTypes.func.isRequired,
   submitButtonClicked: PropTypes.func.isRequired,
   emailValue: PropTypes.string.isRequired,
   textValue: PropTypes.string.isRequired,
-  ratingValue: PropTypes.number.isRequired,
+  ratingValue: PropTypes.string.isRequired,
 };
 export default Form;

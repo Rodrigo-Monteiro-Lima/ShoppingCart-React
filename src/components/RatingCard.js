@@ -19,7 +19,7 @@ class RatingCard extends Component {
 RatingCard.propTypes = {
   personRatingEmail: PropTypes.string.isRequired,
   personRatingMessage: PropTypes.string.isRequired,
-  personRatingNumber: PropTypes.number.isRequired,
+  personRatingNumber: PropTypes.string.isRequired,
 };
 
 export default RatingCard;

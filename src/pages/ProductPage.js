@@ -13,7 +13,7 @@ class ProductDetail extends Component {
       product: [],
       validEmail: false,
       errorLog: '',
-      rating: false,
+      rating: '',
       email: '',
       text: '',
       ratingObject: [],
@@ -59,9 +59,10 @@ class ProductDetail extends Component {
       >
         Campos inválidos
       </span>);
-    this.setState({ errorLog: validEmail && (text !== '') && (rating !== '') ? '' : (
-      errorMessage) });
-    if (validEmail && (text !== '') && (rating !== '')) {
+    this.setState({ errorLog: validEmail && (text !== '')
+    && (rating !== '') ? '' : (
+        errorMessage) });
+    if (validEmail && (rating !== '')) {
       const newRating = {
         email,
         text,
@@ -69,9 +70,11 @@ class ProductDetail extends Component {
       };
       const ratingUpdate = [newRating, ...ratingObject];
       this.setState({ ratingObject: ratingUpdate });
-      this.setState({ email: '', rating: '', text: '' });
+      this.setState({ email: '', text: '', rating: '', errorLog: '' });
       localStorage.setItem(id, JSON.stringify(ratingUpdate));
       console.log(JSON.parse(localStorage.getItem(id)));
+    } else {
+      this.setState({ errorLog: errorMessage });
     }
   };
 
@@ -136,9 +139,6 @@ class ProductDetail extends Component {
         >
           Compre agora!
         </button>
-        <br />
-        <br />
-        <Link to="/shoppingcart"> Cart </Link>
       </div>
     );
   }
