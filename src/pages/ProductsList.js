@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-  // getProductById,
   getProductsFromCategoryAndQuery,
   getCategoriesFromId,
 } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import ButtonCart from '../components/ButtonCart';
 import SideBar from '../components/SideBar/SideBar';
+import Product from '../components/pooModel';
 import './ProductList.css';
 
 class ProductsList extends React.Component {
@@ -17,6 +17,7 @@ class ProductsList extends React.Component {
       productList: '',
       notFound: true,
       cart: [],
+      cartCount: 0,
     };
   }
 
@@ -24,6 +25,9 @@ class ProductsList extends React.Component {
     if (localStorage.getItem('items') === null) {
       localStorage.setItem('items', JSON.stringify([]));
     }
+    const cartList = JSON.parse(localStorage.getItem('items'));
+    const count = cartList.reduce((acc, curr) => acc + curr.qnt, 0);
+    this.setState({ cart: cartList, cartCount: count });
   }
 
   changedInputValue = ({ target }) => {
@@ -45,15 +49,36 @@ class ProductsList extends React.Component {
   save = () => {
     const { cart } = this.state;
     localStorage.setItem('items', JSON.stringify(cart));
+    const cartList = JSON.parse(localStorage.getItem('items'));
+    const count = cartList.reduce((acc, curr) => acc + curr.qnt, 0);
+    this.setState({ cartCount: count });
   };
 
   addCartAndLocalStorage = ({ target }) => {
-    const { productList } = this.state;
+    const { productList, cart } = this.state;
     const id = target.value;
+    const arr = cart;
     const product = productList.find((item) => item.id === id);
-    this.setState((prevState) => ({
-      cart: [...prevState.cart, product],
-    }), this.save);
+
+    const findProduct = cart.find((item) => item.id === id);
+    const findIndex = cart.findIndex((item) => item.id === id);
+    if (findProduct && findIndex >= 0) {
+      arr[findIndex].qnt += 1;
+      this.setState(() => ({
+        cart: arr,
+      }), this.save);
+    } else {
+      const item = new Product();
+      item.id = product.id;
+      item.title = product.title;
+      item.qnt = 1;
+      item.thumbnail = product.thumbnail;
+      item.price = product.price;
+      item.warranty = product.warranty;
+      this.setState((prevState) => ({
+        cart: [...prevState.cart, item],
+      }), this.save);
+    }
   };
 
   handleClick = async (id) => {
@@ -61,9 +86,20 @@ class ProductsList extends React.Component {
     this.setState({ productList: productsList.results, notFound: false });
   };
 
+  handleKeyPress = async (event) => {
+    if (event.key === 'Enter') {
+      const { searchInput } = this.state;
+      const productsList = await getProductsFromCategoryAndQuery('', searchInput);
+      if (productsList.results.length > 0) {
+        this.setState({ productList: productsList.results, notFound: false });
+      } else {
+        this.setState({ notFound: true });
+      }
+    }
+  };
+
   render() {
-    const { notFound, productList } = this.state;
-    // console.log(JSON.parse(localStorage.getItem('items')));
+    const { notFound, productList, cartCount } = this.state;
     const initialTitleMessage = (
       <h2 data-testid="home-initial-message">
         Digite algum termo de pesquisa ou escolha uma categoria.
@@ -79,6 +115,7 @@ class ProductsList extends React.Component {
                 type="text"
                 data-testid="query-input"
                 onChange={ this.changedInputValue }
+                onKeyPress={ this.handleKeyPress }
               />
               <button
                 type="button"
@@ -88,7 +125,7 @@ class ProductsList extends React.Component {
                 Search
               </button>
             </div>
-            <ButtonCart />
+            <ButtonCart cartCount={ cartCount } />
           </div>
           {notFound && initialTitleMessage}
           <div className="products-continer">
