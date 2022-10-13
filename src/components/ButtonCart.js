@@ -7,7 +7,7 @@ class ButtonCart extends Component {
   render() {
     const { cartCount } = this.props;
     return (
-      <div className="cart">
+      <div className="shopping-cart-button cart">
         <Link data-testid="shopping-cart-button" to="/shoppingcart">
           <img
             src="https://cdn-icons-png.flaticon.com/512/34/34627.png"

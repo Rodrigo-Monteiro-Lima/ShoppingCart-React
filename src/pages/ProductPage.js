@@ -4,12 +4,20 @@ import PropTypes from 'prop-types';
 import { getProductFromId } from '../services/api';
 import ButtonCart from '../components/ButtonCart';
 import Product from '../components/pooModel';
+import Form from '../components/Form';
+import RatingCard from '../components/RatingCard';
 
 class ProductDetail extends Component {
   constructor() {
     super();
     this.state = {
       product: [],
+      validEmail: false,
+      errorLog: '',
+      rating: '',
+      email: '',
+      text: '',
+      ratingObject: [],
       cart: [],
       cartCount: 0,
     };
@@ -18,11 +26,67 @@ class ProductDetail extends Component {
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const product = await getProductFromId(id);
+    if (localStorage.getItem(id) === null) {
+      localStorage.setItem(id, JSON.stringify([]));
+    }
+    if (localStorage.getItem('items') === null) {
+      localStorage.setItem('items', JSON.stringify([]));
+      this.setState({ cartCount: 0 });
+    }
+    this.setState(
+      { product, ratingObject: [...JSON.parse(localStorage.getItem(id))] },
+    );
+    this.regexEmail();
     this.setState({ product });
     const cartList = JSON.parse(localStorage.getItem('items'));
     const count = cartList.reduce((acc, curr) => acc + curr.qnt, 0);
     this.setState({ cart: cartList, cartCount: count });
   }
+
+  regexEmail = () => {
+    const { email } = this.state;
+    const regex = /\S+@\S+\.\S+/;
+    this.setState({ validEmail: regex.test(email) });
+  };
+
+  inputValidation = ({ target }) => {
+    const { name, type } = target;
+    const value = type === 'radio' ? target.id : target.value;
+    if (name === 'email') {
+      this.setState({ [name]: value }, this.regexEmail);
+    } else {
+      this.setState({ [name]: value });
+    }
+    console.log(value);
+  };
+
+  submitRating = () => {
+    const { match: { params: { id } } } = this.props;
+    const { validEmail, ratingObject, rating, email, text } = this.state;
+    const errorMessage = (
+      <span
+        data-testid="error-msg"
+      >
+        Campos inválidos
+      </span>);
+    this.setState({ errorLog: validEmail && (text !== '')
+    && (rating !== '') ? '' : (
+        errorMessage) });
+    if (validEmail && (rating !== '')) {
+      const newRating = {
+        email,
+        text,
+        rating,
+      };
+      const ratingUpdate = [newRating, ...ratingObject];
+      this.setState({ ratingObject: ratingUpdate });
+      this.setState({ email: '', text: '', rating: '', errorLog: '' });
+      localStorage.setItem(id, JSON.stringify(ratingUpdate));
+      console.log(JSON.parse(localStorage.getItem(id)));
+    } else {
+      this.setState({ errorLog: errorMessage });
+    }
+  };
 
   save = () => {
     const { cart } = this.state;
@@ -60,7 +124,8 @@ class ProductDetail extends Component {
   };
 
   render() {
-    const { product: { title, thumbnail, price, warranty }, cartCount } = this.state;
+    const { product: { title, thumbnail, price, warranty }, errorLog,
+      ratingObject, rating, text, email, cartCount } = this.state;
     return (
       <div>
         <div>
@@ -76,6 +141,24 @@ class ProductDetail extends Component {
         />
         <h4 data-testid="product-detail-price">{price}</h4>
         <h4>{warranty}</h4>
+        <Form
+          inputChanged={ this.inputValidation }
+          submitButtonClicked={ this.submitRating }
+          emailValue={ email }
+          ratingValue={ rating }
+          textValue={ text }
+        />
+        <div>
+          {errorLog}
+        </div>
+        {ratingObject.map((rateObject, index) => (
+          <RatingCard
+            key={ `${rateObject.email} ${index}` }
+            personRatingEmail={ rateObject.email }
+            personRatingMessage={ rateObject.text }
+            personRatingNumber={ rateObject.rating }
+          />
+        ))}
         <button
           data-testid="product-detail-add-to-cart"
           type="button"
